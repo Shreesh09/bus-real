@@ -14,23 +14,23 @@ const router=createBrowserRouter([
     element:<App />,
     children:[
       {
-        path: "/",
+        path: "/bus-real",
         element:<TypeOfUser/>
       },
       {
-        path:"/driver/registerDriver",
+        path:"/bus-real/driver/registerDriver",
         element:<RegisterDriver />
       },
       {
-        path:"/driver/sendLocation/:id",
+        path:"/bus-real/driver/sendLocation/:id",
         element:<SendLocation/>
       },
       {
-        path:"/user/lookupVehicle",
+        path:"/bus-real/user/lookupVehicle",
         element:<LookupVehicles />
       },
       {
-        path:"/user/trackVehicle/:id",
+        path:"/bus-real/user/trackVehicle/:id",
         element:<TrackVechicle />
       }
     ]

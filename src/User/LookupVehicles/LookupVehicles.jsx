@@ -7,7 +7,7 @@ function Card({busNumber,startingPoint,destinationPoint,active,objectId})
 {
     return (
         <div className="rounded-lg bg-slate-700 w-[400px] text-white">
-            <h1><Link to= {`/user/trackVehicle/${objectId}`}>Bus Number :- {busNumber}</Link></h1>
+            <h1><Link to= {`/bus-real/user/trackVehicle/${objectId}`}>Bus Number :- {busNumber}</Link></h1>
             <h1>Current Location :{startingPoint.toUpperCase()}</h1>
             <h2>Target Location :{destinationPoint.toUpperCase()}</h2>
             <div className="flex space-x-10">Bus Status :- &nbsp;  {active === "active"?<h1 className="w-[20px] h-[20px] rounded-full bg-green-600"></h1>:<h1 className="w-[20px] h-[20px] rounded-full bg-red-600"></h1>}</div>
@@ -28,16 +28,26 @@ export function LookupVehicles()
         setDataReceived(filteredResult)
     }
 
-    async function getActiveBusDetails()
+    function getActiveBusDetails()
     {
-        const response=await axios.get(`http://localhost:443/api/v1/activeBus`)
-        console.log(response.data.buses)
-        setDataReceived(response.data.buses)
-        setPreserveData(response.data.buses)
-        setLoading(false)
+
+        axios.get('https://mutually-noble-turtle.ngrok-free.app/api/v1/activeBus', {
+            headers: {
+                'Content-Type': 'application/json',
+                'ngrok-skip-browser-warning': 'true'
+            },
+        })
+            .then(response => {
+                console.log(response.data);
+                setDataReceived(response.data.buses);
+                setPreserveData(response.data.buses);
+                setLoading(false);
+            })
+
     }
+
     useEffect(()=>{
-        getActiveBusDetails()
+         getActiveBusDetails()
     },[])
 
     return (
@@ -51,7 +61,7 @@ export function LookupVehicles()
             <button className="px-4 py-2 text-1xl bg-blue-700 text-white rounded-tr-lg rounded-br-lg" onClick={searchLocation}>Search</button>
         </div>
         <div className="space-y-16 mt-10">
-        {isLoading?<h1 className="text-white"> Ruko Bhaiyo </h1>:dataReceived.map((ele)=><Card busNumber={ele.busNumber}  startingPoint={ele.startingPoint} destinationPoint={ele.destinationPoint} active={ele.busStatus} key={ele._id} objectId={ele._id}/>)}
+        {(isLoading)?<h1 className="text-white"> Ruko Bhaiyo </h1>:dataReceived.map((ele)=><Card busNumber={ele.busNumber}  startingPoint={ele.startingPoint} destinationPoint={ele.destinationPoint} active={ele.busStatus} key={ele._id} objectId={ele._id}/>)}
         </div>
         </>
     )
